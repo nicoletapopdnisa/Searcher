@@ -26,6 +26,11 @@ class TableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        gifImage.image = nil
+    }
+    
     func configure(gifUrl: String) {
         let url = URL(string: gifUrl)
         

@@ -59,6 +59,10 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
         searchBar.endEditing(true)
     }
     
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        getGifData()
+    }
+    
     @IBAction func searchButtonPressed(_ sender: Any) {
         let searchBar = self.navigationItem.leftBarButtonItem!.customView
         if searchBar?.isHidden == true {
@@ -146,6 +150,7 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "myTableViewCell", for: indexPath) as! TableViewCell
         cell.configure(gifUrl: self.gifs[indexPath.row])
+        cell.sizeToFit()
         
         return cell
     }
