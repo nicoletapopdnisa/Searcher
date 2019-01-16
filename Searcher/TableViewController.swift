@@ -25,7 +25,7 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
         
         DispatchQueue.main.async {
             self.tableView.rowHeight = UITableView.automaticDimension
-            self.tableView.estimatedRowHeight = 400.0
+            self.tableView.estimatedRowHeight = 300.0
             
         }
         
@@ -149,9 +149,8 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "myTableViewCell", for: indexPath) as! TableViewCell
+
         cell.configure(gifUrl: self.gifs[indexPath.row])
-        cell.sizeToFit()
-        
         return cell
     }
     
@@ -160,7 +159,7 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
     }
     
     override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 400.0
+        return 300.0
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
