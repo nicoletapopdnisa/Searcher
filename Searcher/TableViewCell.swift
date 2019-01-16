@@ -7,13 +7,13 @@
 //
 
 import UIKit
-import FLAnimatedImage
+import SwiftyGif
 
 class TableViewCell: UITableViewCell {
 
     
     
-    @IBOutlet weak var animatedImageView: FLAnimatedImageView!
+    @IBOutlet weak var gifImage: UIImageView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -24,6 +24,16 @@ class TableViewCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
+    }
+    
+    func configure(gifUrl: String) {
+        let url = URL(string: gifUrl)
+        
+        DispatchQueue.main.async {
+            self.gifImage.setGifFromURL(url, manager: SwiftyGifManager.defaultManager, loopCount: -1, showLoader: false)
+        }
+        
+        
     }
 
 }

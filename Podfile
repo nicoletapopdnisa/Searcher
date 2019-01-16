@@ -10,4 +10,5 @@ target 'Searcher' do
     pod 'SwiftyJSON'
     pod 'Alamofire'
     pod 'FLAnimatedImage'
+    pod 'SwiftyGif'
 end

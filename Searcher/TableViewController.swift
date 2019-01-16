@@ -9,7 +9,7 @@
 import UIKit
 import Alamofire
 import SwiftyJSON
-import FLAnimatedImage
+import SwiftyGif
 
 class TableViewController: UITableViewController, UISearchBarDelegate {
     
@@ -23,9 +23,12 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        DispatchQueue.main.async {
+            self.tableView.rowHeight = UITableView.automaticDimension
+            self.tableView.estimatedRowHeight = 400.0
+            
+        }
         
-        self.tableView.estimatedRowHeight = 600.0
-        self.tableView.rowHeight = UITableView.automaticDimension
         
         setUpSearchBar()
         
@@ -33,7 +36,7 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
         
         getGifData()
     }
-    
+
     //MARK: - Searchbar setup
     
     func setUpSearchBar() {
@@ -44,8 +47,11 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
         searchBar.delegate = self
         searchBar.isHidden = true
         
-        let leftNavBarButton = UIBarButtonItem(customView:searchBar)
-        self.navigationItem.leftBarButtonItem = leftNavBarButton
+        DispatchQueue.main.async {
+            let leftNavBarButton = UIBarButtonItem(customView:searchBar)
+            self.navigationItem.leftBarButtonItem = leftNavBarButton
+        }
+
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
@@ -69,20 +75,26 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
     //MARK: - Search bar delegate methods
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        self.nextOne = 0
-        params["q"] = searchText
-        params["pos"] = String(self.nextOne)
-        self.gifs.removeAll()
-        self.tableView.reloadData()
-        getGifData()
-        
+        self.stringToSearch = searchText
+        NSObject.cancelPreviousPerformRequests(withTarget: self, selector: #selector(reload), object: nil)
+        self.perform(#selector(reload), with: nil, afterDelay: 0.2)
     }
     
+    @objc func reload() {
+        self.gifs.removeAll()
+        self.tableView.reloadData()
+        self.nextOne = 0
+        params["pos"] = String(self.nextOne)
+        params["q"] = self.stringToSearch
+        
+        getGifData()
+    }
     
     //MARK: - Networking
     
     func getGifData() {
-        Alamofire.request(GIF_URL, method: .get, parameters: params).responseJSON {
+        let queue = DispatchQueue(label: "com.tenor.api", qos: .background, attributes: .concurrent)
+        Alamofire.request(GIF_URL, method: .get, parameters: params).responseJSON(queue: queue) {
             response in
             if response.result.isSuccess {
                 print("Succes! Got the data.")
@@ -90,7 +102,10 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
                 let gifJSON : JSON = JSON(response.result.value!)
                 self.processJSON(json: gifJSON)
                 
-                self.tableView.reloadData()
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
+                
                 
                 self.nextOne = self.nextOne + 5
                 self.params["pos"] = String(self.nextOne)
@@ -116,7 +131,7 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
         }
 }
     
-    // MARK: - Table view data source
+    // MARK: - Table view data source methods
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -128,24 +143,29 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: "myTableViewCell", for: indexPath) as! TableViewCell
-
-        let url = URL(string: gifs[indexPath.row])!
-        let imageData = try? Data(contentsOf: url)
-        
-        let animatedImage = FLAnimatedImage(animatedGIFData: imageData)
-        cell.animatedImageView.animatedImage = animatedImage
-        
+        cell.configure(gifUrl: self.gifs[indexPath.row])
         
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        print(cell.frame.size.height)
+    }
+    
+    override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 400.0
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
     }
     
     //MARK: - Scroll View delegate methods
     
     override func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        if decelerate {
             getGifData()
-        }
     }
     
 
