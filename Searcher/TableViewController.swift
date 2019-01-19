@@ -19,7 +19,7 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
     var gifs = [String]()
     var params: [String: String] = ["q": "", "key": "AWMHIP5GIBF3", "limit": "20", "pos": "0"]
     var stringToSearch = ""
-    let imageCache = NSCache<NSNumber, NSString>()
+    var imageCache = NSCache<NSNumber, UIImage>()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -91,6 +91,7 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
         self.gifs.removeAll()
         self.tableView.reloadData()
         self.nextOne = 0
+        self.imageCache = NSCache<NSNumber, UIImage>()
         params["pos"] = String(self.nextOne)
         params["q"] = self.stringToSearch
         
@@ -151,9 +152,16 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "myTableViewCell", for: indexPath) as! TableViewCell
-    
-        cell.configure(gifUrl: self.gifs[indexPath.row])
         
+        cell.gifImage.delegate = self
+        cell.gifImage.attachedIndexPath = indexPath.row
+        var loadFromUrl: Bool = true
+        let image = imageCache.object(forKey: cell.gifImage.attachedIndexPath as NSNumber)
+        if image != nil {
+            loadFromUrl = false
+        }
+        
+        cell.configure(gifUrl: self.gifs[indexPath.row], loadFromUrl: loadFromUrl, image: image)
         return cell
         
     }
@@ -175,4 +183,15 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
         }
     }
 
+}
+
+//MARK: - SwiftyGif delegate methods
+
+extension TableViewController: SwiftyGifDelegate {
+    func gifURLDidFinish(sender: UIImageView) {
+        if imageCache.object(forKey: sender.attachedIndexPath as NSNumber) == nil {
+            imageCache.setObject(sender.gifImage!, forKey: sender.attachedIndexPath as NSNumber)
+            print("\(sender.attachedIndexPath) - \(sender)")
+        }
+    }
 }

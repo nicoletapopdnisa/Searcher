@@ -13,6 +13,7 @@
 		A5BAFD7321EBD17E00F5F643 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A5BAFD7121EBD17E00F5F643 /* LaunchScreen.storyboard */; };
 		A5BAFD7B21EBD37C00F5F643 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5BAFD7A21EBD37C00F5F643 /* TableViewController.swift */; };
 		A5BAFD7D21EBD3F900F5F643 /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5BAFD7C21EBD3F900F5F643 /* TableViewCell.swift */; };
+		A5FB970F21F3775700F88B8D /* UIImageView+URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5FB970E21F3775700F88B8D /* UIImageView+URL.swift */; };
 		B19958CA12C651B79B7BC92E /* Pods_Searcher.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BD589B591C9FCAB967B4758 /* Pods_Searcher.framework */; };
 /* End PBXBuildFile section */
 
@@ -27,6 +28,7 @@
 		A5BAFD7421EBD17E00F5F643 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A5BAFD7A21EBD37C00F5F643 /* TableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
 		A5BAFD7C21EBD3F900F5F643 /* TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
+		A5FB970E21F3775700F88B8D /* UIImageView+URL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+URL.swift"; sourceTree = "<group>"; };
 		BD00000035EE7EF91DDD7A5E /* Pods-Searcher.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Searcher.release.xcconfig"; path = "Pods/Target Support Files/Pods-Searcher/Pods-Searcher.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -79,6 +81,7 @@
 				A5BAFD6F21EBD17E00F5F643 /* Assets.xcassets */,
 				A5BAFD7121EBD17E00F5F643 /* LaunchScreen.storyboard */,
 				A5BAFD7421EBD17E00F5F643 /* Info.plist */,
+				A5FB970E21F3775700F88B8D /* UIImageView+URL.swift */,
 			);
 			path = Searcher;
 			sourceTree = "<group>";
@@ -219,6 +222,7 @@
 			files = (
 				A5BAFD7D21EBD3F900F5F643 /* TableViewCell.swift in Sources */,
 				A5BAFD6921EBD17D00F5F643 /* AppDelegate.swift in Sources */,
+				A5FB970F21F3775700F88B8D /* UIImageView+URL.swift in Sources */,
 				A5BAFD7B21EBD37C00F5F643 /* TableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
