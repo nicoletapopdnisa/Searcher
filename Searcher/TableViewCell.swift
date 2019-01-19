@@ -26,13 +26,14 @@ class TableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    func configure(gifUrl: String) {
+    func configure(gifUrl: String){
         let url = URL(string: gifUrl)
         
+        self.gifImage.image = nil
         DispatchQueue.main.async {
-            self.gifImage.image = nil
             self.gifImage.setGifFromURL(url, manager: SwiftyGifManager.defaultManager, loopCount: -1, showLoader: false)
         }
+        
         
         
     }

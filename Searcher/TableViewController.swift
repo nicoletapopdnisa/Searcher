@@ -17,8 +17,9 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
     let API_KEY = "AWMHIP5GIBF3"
     var nextOne = 0
     var gifs = [String]()
-    var params: [String: String] = ["q": "", "key": "AWMHIP5GIBF3", "limit": "5", "pos": "0"]
+    var params: [String: String] = ["q": "", "key": "AWMHIP5GIBF3", "limit": "20", "pos": "0"]
     var stringToSearch = ""
+    let imageCache = NSCache<NSNumber, NSString>()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,6 +27,7 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
         DispatchQueue.main.async {
             self.tableView.rowHeight = UITableView.automaticDimension
             self.tableView.estimatedRowHeight = 300.0
+            self.tableView.layer.masksToBounds = true
             
         }
         
@@ -68,6 +70,7 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
         if searchBar?.isHidden == true {
             searchBar?.isHidden = false
             searchBar?.endEditing(false)
+            searchBar?.becomeFirstResponder()
         }
         else {
             searchBar?.isHidden = true
@@ -111,7 +114,7 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
                 }
                 
                 
-                self.nextOne = self.nextOne + 5
+                self.nextOne = self.nextOne + 20
                 self.params["pos"] = String(self.nextOne)
 
             }
@@ -147,17 +150,14 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         let cell = tableView.dequeueReusableCell(withIdentifier: "myTableViewCell", for: indexPath) as! TableViewCell
-
+    
         cell.configure(gifUrl: self.gifs[indexPath.row])
+        
         return cell
+        
     }
-    
-    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        print(cell.frame.size.height)
-    }
-    
+
     override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         return 300.0
     }
@@ -167,10 +167,12 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
     }
     
     //MARK: - Scroll View delegate methods
-    
-    override func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+
+    override func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        if (scrollView.contentOffset.y >= (scrollView.contentSize.height - scrollView.frame.size.height)) {
+           
             getGifData()
+        }
     }
-    
 
 }
