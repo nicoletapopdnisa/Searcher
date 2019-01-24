@@ -165,7 +165,16 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
         return cell
         
     }
-
+    
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        let totalNumberOfRows = tableView.numberOfRows(inSection: indexPath.section);
+        
+        if(indexPath.row == totalNumberOfRows - 1) {
+            getGifData()
+        }
+        
+    }
+    
     override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         return 300.0
     }
@@ -176,12 +185,12 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
     
     //MARK: - Scroll View delegate methods
 
-    override func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+    /*override func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         if (scrollView.contentOffset.y >= (scrollView.contentSize.height - scrollView.frame.size.height)) {
            
             getGifData()
         }
-    }
+    }*/
 
 }
 

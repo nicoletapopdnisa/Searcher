@@ -27,7 +27,7 @@ class TableViewCell: UITableViewCell {
     }
     
     func configure(gifUrl: String, loadFromUrl: Bool, image: UIImage?){
-        self.gifImage.image = nil
+        self.gifImage.setGifImage(UIImage())
         if loadFromUrl {
             let url = URL(string: gifUrl)
             
